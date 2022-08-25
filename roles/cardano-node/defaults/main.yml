@@ -6,7 +6,7 @@ server_username: deploy
 # Cabal
 cabal_install_version: 3.6.2.0
 cabal_base_url: "https://downloads.haskell.org"
-cabal_install_url: "{{ cabal_base_url }}/~cabal/cabal-install-{{ cabal_install_version }}/cabal-install-{{ cabal_install_version }}-x86_64-unknown-linux.tar.xz"
+cabal_install_url: "{{ cabal_base_url }}/~cabal/cabal-install-{{ cabal_install_version }}/cabal-install-{{ cabal_install_version }}-x86_64-linux-deb10.tar.xz"
 
 # GHC
 ghc_install_version: 8.10.7
