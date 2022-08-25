@@ -161,7 +161,7 @@
   git:
     repo: "{{ secp256k1_github_url }}"
     dest: /home/{{ server_username }}/src/secp256k1
-    version: "{{ cardano_version_tag }}"
+    version: "{{ secp256k1_tag }}"
     clone: yes
     accept_hostkey: yes
   register: repo_download
