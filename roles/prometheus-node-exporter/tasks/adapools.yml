@@ -10,7 +10,7 @@
 
 - name: "Configure prometheus node exporter | set get stats script from adapools"
   template:
-    src: "{{ role_path }}/templates/getstats.sh"
+    src: "{{ role_path }}/templates/getstats.sh.j2"
     dest: "/home/deploy/adapools-getstats.sh"
     owner: "{{ server_username }}"
     group: "{{ server_username }}"
