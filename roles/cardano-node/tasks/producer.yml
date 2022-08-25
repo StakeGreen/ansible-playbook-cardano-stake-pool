@@ -1,0 +1,50 @@
+---
+# In this directory you can place files that you would like to be synced with Ansible.
+# Do not place your block producer keys in here because they should only be available on your producer and cold environment
+- name: "Configure producer node | Copy files inside the keys directory for producer"
+  copy:
+      src: cardano-producer-files/
+      dest: "{{ cardano_keys_dir }}"
+      owner: "{{ server_username }}"
+      group: "{{ server_username }}"
+      mode: 0400
+  tags:
+      - configure
+
+- name: "Configure producer node | Copy startup template to scripts directory"
+  template:
+      src: "{{ role_path }}/templates/startBlockProducingNode.sh.j2"
+      dest: "{{ cardano_scripts_dir }}/start-node.sh"
+      owner: "{{ server_username }}"
+      group: "{{ server_username }}"
+      mode: 0704
+  tags:
+      - configure
+
+- name: "Configure producer node | Copy topology to production"
+  template:
+      src: "{{ role_path }}/templates/producer-topology.json.j2"
+      dest: "{{ cardano_config_dir }}/{{ cardano_topology_filename }}"
+      owner: "{{ server_username }}"
+      group: "{{ server_username }}"
+      mode: 0704
+  tags:
+      - configure
+
+- name: "Configure producer node | Create working dirctory for transactions"
+  file:
+    path: "/home/{{ server_username }}/working_dir"
+    state: directory
+    mode: 0700
+    owner: "{{ server_username }}"
+  tags:
+      - configure
+
+- name: "Configure producer node | Create directory for the keys (only the ones needed to run the BP node)"
+  file:
+    path: "{{ cardano_install_dir }}/keys"
+    state: directory
+    mode: 0700
+    owner: "{{ server_username }}"
+  tags:
+      - configure

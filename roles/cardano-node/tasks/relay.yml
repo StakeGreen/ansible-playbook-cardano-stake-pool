@@ -1,0 +1,44 @@
+---
+- name: "Configure Relay | Mitigate DDoS/Syn attack by restricting connections"
+  shell: |
+    iptables -C INPUT -p tcp -m tcp --dport {{ cardano_default_port }} --tcp-flags FIN,SYN,RST,ACK SYN -m connlimit --connlimit-above 5 --connlimit-mask 32 --connlimit-saddr -j REJECT --reject-with tcp-reset ||
+    iptables -I INPUT -p tcp -m tcp --dport {{ cardano_default_port }} --tcp-flags FIN,SYN,RST,ACK SYN -m connlimit --connlimit-above 5 --connlimit-mask 32 --connlimit-saddr -j REJECT --reject-with tcp-reset
+  tags:
+    - configure
+    - iptables
+
+- name: "Configure Relay | Create topology push file"
+  template:
+    src: "{{ role_path }}/templates/topologyUpdater.sh.j2"
+    dest: "{{ cardano_scripts_dir }}/topologyUpdater.sh"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0704
+  tags:
+    - configure
+
+- name: "Configure Relay | Create topology pull file"
+  template:
+    src: "{{ role_path }}/templates/relay_topology_pull.sh.j2"
+    dest: "{{ cardano_scripts_dir }}/relay_topology_pull.sh"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0704
+  tags:
+    - configure
+
+- name: "Configure Relay | Set topology push update cron"
+  ansible.builtin.cron:
+    name: "send previous and current epochs slots to pooltool"
+    minute: "33"
+    job: "{{ cardano_install_dir }}/scripts/topologyUpdater.sh"
+  tags:
+    - configure
+    - crontab
+
+- name: "Configure Relay | Run the topology pull command"
+  shell: |
+    {{ cardano_scripts_dir }}/relay_topology_pull.sh
+  tags:
+    - configure
+    - always

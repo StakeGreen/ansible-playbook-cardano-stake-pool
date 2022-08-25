@@ -1,0 +1,3 @@
+[node]
+relay1.mypool.com ansible_user=deploy server_hostname=relay1-mypool
+relay2.mypool.com ansible_user=deploy server_hostname=relay2-mypool

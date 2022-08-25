@@ -1,0 +1,44 @@
+---
+- name: "Server Setup | Set timezone to Europe/Amsterdam"
+  timezone:
+    name: "{{ server_timezone }}"
+  tags:
+    - monitoring
+
+- name: "Server Setup | Set hostname of installer to static value"
+  command: "hostnamectl set-hostname {{ server_hostname }} --static"
+  tags:
+    - monitoring
+
+- name: "Install prometheus"
+  apt:
+      pkg:
+          - prometheus
+          - jq
+      state: present
+  tags: monitoring
+
+- name: "Configure prometheus | Enable prometheus service"
+  systemd: state=started name=prometheus.service daemon_reload=yes
+  tags: monitoring
+
+- name: "Configure prometheus | Ensure prometheus service does start and bootstrap"
+  systemd:
+      name: prometheus.service
+      state: started
+      enabled: yes
+  tags: monitoring
+
+- name: "Configure prometheus | set config"
+  template:
+    src: "{{ role_path }}/templates/prometheus.yml.j2"
+    dest: "/etc/prometheus/prometheus.yml"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0704
+  tags:
+    - monitoring
+  notify:
+    - restart prometheus-node-exporter
+    - restart prometheus
+  changed_when: true

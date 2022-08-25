@@ -1,0 +1,36 @@
+---
+- name: "Configure producer node | Create textcollector directory"
+  file:
+    path: "/var/lib/prometheus/node-exporter/adapools"
+    state: directory
+    mode: 0755
+    owner: "root"
+  tags:
+      - monitoring
+
+- name: "Configure prometheus node exporter | set get stats script from adapools"
+  template:
+    src: "{{ role_path }}/templates/getstats.sh"
+    dest: "/home/deploy/adapools-getstats.sh"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0700
+  tags:
+    - monitoring
+
+- name: "Administer Node | Install prometheus node exporter start script"
+  template: src={{ role_path }}/templates/prometheus-node-exporter.service.j2 dest=/etc/systemd/system/prometheus-node-exporter.service mode=u=rw,g=r,o=r owner=root group=root
+  tags:
+    - monitoring
+  notify:
+    - restart prometheus-node-exporter
+
+- name: "Node monitoring | Create adapools stats crontab entry"
+  ansible.builtin.cron:
+    name: "Get the adapools stats"
+    minute: "45"
+    hour: "*"
+    job: "/home/deploy/adapools-getstats.sh"
+  tags:
+    - monitoring
+    - crontab

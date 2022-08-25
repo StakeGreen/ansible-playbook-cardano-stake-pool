@@ -1,0 +1,5 @@
+---
+server_hostname: monitor-mypool
+monitoring_vhost: monitor.mypool.com
+
+

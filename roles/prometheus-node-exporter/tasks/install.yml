@@ -1,0 +1,20 @@
+---
+- name: "Install prometheus node exporter"
+  apt:
+      pkg:
+          - prometheus-node-exporter
+      state: present
+  tags: monitoring
+
+- name: "Configure prometheus node exporter | Enable prometheus-node-exporter service"
+  systemd: state=started name=prometheus-node-exporter.service daemon_reload=yes
+  tags: monitoring
+
+- name: "Configure prometheus node exporter | Ensure prometheus-node-exporter service does start and bootstrap"
+  systemd:
+      name: prometheus-node-exporter.service
+      state: started
+      enabled: yes
+  tags: monitoring
+
+

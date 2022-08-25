@@ -1,0 +1,6 @@
+---
+- include: install.yml
+  when: "'block-producer' in inventory_dir or 'relay-node' in inventory_dir"
+
+- include: adapools.yml
+  when: "'relay-node' in inventory_dir"

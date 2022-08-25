@@ -1,0 +1,114 @@
+---
+- name: Install apt requirements
+  apt:
+    pkg: aptitude
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade existing packages 
+  apt:
+    update_cache: yes
+    upgrade: safe
+  ignore_errors: true
+
+- name: Install new packages
+  apt:
+    pkg:
+      - git-core
+      - ufw
+      - unattended-upgrades
+      - logrotate
+      - logwatch
+      - net-tools
+      - tmuxinator
+      - vim
+      - htop
+      - curl
+    state: present
+  tags: packages
+
+- name: Configure automatic updates
+  copy: src=apt_periodic dest=/etc/apt/apt.conf.d/10periodic
+  tags: packages
+
+- name: Set default shell to /bin/bash
+  command: "chsh -s /bin/bash {{ ansible_user }}"
+
+- name: Load cmdline content
+  slurp:
+    src: "/proc/cmdline"
+  register: cmdline_data
+  tags: disable-ipv6
+
+- name: Disable IPv6
+  template:
+    src: disableipv6.conf.template
+    dest: /etc/sysctl.d/10-disable-ipv6.conf
+  notify: run sysctl
+  when: 'not "ipv6.disable=1" in cmdline_data.content|b64decode'
+  tags: disable-ipv6
+
+- name: Set swap_file variable
+  set_fact:
+    swap_file: "{{swap_file_path}}"
+  tags:
+      - swap
+
+- name: Check if swap file exists
+  stat:
+    path: "{{swap_file}}"
+  register: swap_file_check
+  tags:
+    - swap
+
+- name: Create swap file
+  command: fallocate -l {{swap_file_size}} {{swap_file}}
+  when: not swap_file_check.stat.exists
+  tags:
+    - swap
+
+- name: Change swap file permissions
+  file: path="{{swap_file}}"
+    owner=root
+    group=root
+    mode=0600
+  tags:
+    - swap
+
+- name: Format swap file
+  become: yes
+  command: "mkswap {{swap_file}}"
+  when: not swap_file_check.stat.exists
+  tags:
+    - swap
+
+- name: Write swap entry in fstab
+  mount: name=none
+    src={{swap_file}}
+    fstype=swap
+    opts=sw
+    passno=0
+    dump=0
+    state=present
+  tags:
+    - swap
+
+- name: Turn on swap
+  become: yes
+  command: swapon -a
+  when: not swap_file_check.stat.exists
+  tags:
+    - swap
+
+- name: Set swappiness
+  become: yes
+  sysctl:
+    name: vm.swappiness
+    value: "{{swappiness}}"
+  tags:
+    - swap
+
+
+
+

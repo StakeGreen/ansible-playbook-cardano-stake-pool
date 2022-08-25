@@ -1,0 +1,27 @@
+---
+- name: "Upgrade: all packages"
+  ansible.builtin.apt:
+    name: '*'
+    state: latest
+    update_cache: yes
+  tags:
+    - update
+
+- name: "Upgrade: pull topology file"
+  shell: |
+    {{ cardano_scripts_dir }}/relay_topology_pull.sh
+  when: "'relay-node' in inventory_dir"
+  tags:
+    - update
+
+- name: "Upgrade: stop cardano-node"
+  ansible.builtin.service:
+    name: cardano-node
+    state: stopped
+  tags:
+    - update
+
+- name: "Upgrade: reboot the server"
+  ansible.builtin.reboot:
+  tags:
+    - update

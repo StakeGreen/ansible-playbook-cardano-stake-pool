@@ -1,0 +1,13 @@
+---
+- include: configure.yml
+  when: "'block-producer' in inventory_dir or 'relay-node' in inventory_dir"
+- include: install.yml
+  when: "'block-producer' in inventory_dir or 'relay-node' in inventory_dir"
+- include: administer.yml
+  when: "'block-producer' in inventory_dir or 'relay-node' in inventory_dir"
+- include: producer.yml
+  when: "'block-producer' in inventory_dir"
+- include: relay.yml
+  when: "'relay-node' in inventory_dir"
+- include: update.yml
+  when: "'block-producer' in inventory_dir or 'relay-node' in inventory_dir or 'monitor' in inventory_dir"

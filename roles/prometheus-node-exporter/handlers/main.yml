@@ -1,0 +1,10 @@
+---
+- name: restart prometheus node exporter
+  service:
+      name: prometheus-node-exporter
+      state: restarted
+
+- name: start cardano-node
+  service:
+      name: cardano-node
+      state: started

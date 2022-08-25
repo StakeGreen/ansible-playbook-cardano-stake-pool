@@ -1,0 +1,22 @@
+---
+# Cross-environent variables are stored here
+ssh_port: "22"
+cardano_default_port: "6000"
+prometheus_node_exporter_port: "9100"
+cardana_prometheus_port: "12798"
+grafana_port: "3000"
+block_producer_ip: "127.0.0.1"
+relay1_ip: "127.0.0.2"
+relay2_ip: "127.0.0.3"
+monitor_ip: "127.0.0.4"
+administration_email: "email@mypool.com"
+server_timezone: "Europe/Amsterdam"
+# Pool metadata
+cardano_pool_name: "My pool"
+cardano_pool_description: "My pool description"
+cardano_pool_ticker: "TICKER"
+cardano_pool_homepage: "https://www.mypool.com"
+cardano_pool_extended: "https://www.mypool.com/extendedPoolMetaData.json"
+# Pooltool vars
+cardano_pool_id: "cardano_pool_id"
+pool_tool_api_id: "pool-tool-api-id"

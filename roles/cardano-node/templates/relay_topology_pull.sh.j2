@@ -1,0 +1,4 @@
+#!/bin/bash
+BLOCKPRODUCING_IP={{ block_producer_ip }}
+BLOCKPRODUCING_PORT={{ cardano_default_port }}
+curl -4 -s -o /opt/cardano/cnode/configuration/{{ cardano_node_config }}-topology.json "https://api.clio.one/htopology/v1/fetch/?max=20&magic=${NWMAGIC}&customPeers=${BLOCKPRODUCING_IP}:${BLOCKPRODUCING_PORT}:1|relays-new.cardano-{{ cardano_node_config }}.iohk.io:3001:2"

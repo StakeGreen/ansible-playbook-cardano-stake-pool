@@ -1,0 +1,66 @@
+---
+# for Block producing nodes ONLY
+- name: "Administer Node | Install cncli latest release"
+  ansible.builtin.unarchive:
+    src: "{{ cardano_community_cncli_uri }}/{{ cardano_community_cncli_tag}}/cncli-{{ cardano_community_cncli_version}}-x86_64-unknown-linux-gnu.tar.gz"
+    dest: /usr/local/bin/
+    remote_src: yes
+  tags:
+    - administer
+
+- name: "Administer Node | Install cardano cli scripts"
+  template:
+    src: "{{ item }}"
+    dest: "{{ cardano_install_dir }}/scripts/cardano-cli/{{ item | basename }}"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0755
+  with_fileglob:
+    - ../templates/cardano-cli/*.sh
+  tags:
+    - administer
+    - administer-scripts
+
+- name: "Administer Node | Install cncli-sync.service"
+  template: src={{ role_path }}/templates/cncli-sync.service.j2 dest=/etc/systemd/system/cncli-sync.service mode=u=rw,g=r,o= owner=root group=root
+  tags:
+    - administer
+    - service
+
+- name: "Administer Node | Install cncli-sendtip.service"
+  template: src={{ role_path }}/templates/cncli-sendtip.service.j2 dest=/etc/systemd/system/cncli-sendtip.service mode=u=rw,g=r,o= owner=root group=root
+  tags:
+    - administer
+    - service
+
+- name: "Administer Node | Enable and start cncli-sync.service"
+  systemd:
+    name: cncli-sync.service
+    state: started
+    enabled: yes
+  tags:
+    - administer
+    - service
+
+- name: "Administer Node | Enable and start cncli-sendtip.service"
+  systemd:
+    name: cncli-sendtip.service
+    state: started
+    enabled: yes
+  tags:
+    - administer
+    - service
+
+- name: "Administer Node | Install pooltool json"
+  template:
+    src: "{{ role_path }}/templates/pooltool.json.j2"
+    dest: "{{ cardano_install_dir }}/scripts/pooltool.json"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0755
+  tags:
+    - administer
+
+
+
+

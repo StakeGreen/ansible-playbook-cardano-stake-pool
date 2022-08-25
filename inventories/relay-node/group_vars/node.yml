@@ -1,0 +1,3 @@
+# Cardano relay node group_vars 
+---
+cardano_config_snapshot_interval: 43200

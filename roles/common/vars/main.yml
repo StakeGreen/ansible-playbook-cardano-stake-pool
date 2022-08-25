@@ -1,0 +1,8 @@
+---
+fail2ban_ignoreip: "127.0.0.1/8 ::1"
+fail2ban_bantime: 1w
+fail2ban_findtime: 1d
+fail2ban_maxretry: 2
+swap_file_size: 16G
+swappiness: 10
+swap_file_path: /swapfile

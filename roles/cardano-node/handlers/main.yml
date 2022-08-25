@@ -1,0 +1,10 @@
+---
+- name: restart cardano-node
+  service:
+      name: cardano-node
+      state: started
+
+- name: restart chronyd
+  service:
+      name: chronyd.service
+      state: restarted

@@ -1,0 +1,2 @@
+[node]
+monitor.mypool.com ansible_user=deploy
