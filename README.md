@@ -132,3 +132,7 @@ ansible-playbook provision.yml -i inventories/relay-node --tags "install" --chec
 
 The process above includes downloading and compiling `cardano-node` from source, along with the latest dependencies, if
 needed.
+
+### Version control
+If you would like to keep your modified playbook also in version control it's possible create a private for of a public repo. This [guide](https://junyonglee.me/github/How-to-make-forked-private-repository/) explains it clearly. That way you will be able to receive updates from our repository. 
+Unfortunately Github doesn't support forking a public repository privately by default.   
