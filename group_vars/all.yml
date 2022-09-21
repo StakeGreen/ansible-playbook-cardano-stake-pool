@@ -19,4 +19,5 @@ cardano_pool_homepage: "https://www.mypool.com"
 cardano_pool_extended: "https://www.mypool.com/extendedPoolMetaData.json"
 # Pooltool vars
 cardano_pool_id: "cardano_pool_id"
+cardano_pool_id_bech32: "cardano_pool_id_bech32"
 pool_tool_api_id: "pool-tool-api-id"
