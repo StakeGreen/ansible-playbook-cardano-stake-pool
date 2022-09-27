@@ -46,9 +46,9 @@ cardano_shelly_test_topology: "https://hydra.iohk.io/build/{{ node_build_num }}/
 cardano_magic_prefix: "--mainnet"
 
 # Monitoring tools
-cardano_community_cncli_uri: "https://github.com/AndrewWestberg/cncli/releases/download/"
-cardano_community_cncli_tag: "v4.0.4"
-cardano_community_cncli_version: "4.0.4"
+cardano_community_cncli_uri: "https://github.com/cardano-community/cncli/releases/download/"
+cardano_community_cncli_tag: "v5.1.2"
+cardano_community_cncli_version: "5.1.2"
 cardano_community_gliveview: "https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/gLiveView.sh"
 cardano_community_gliveview_env: "https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/env"
 
