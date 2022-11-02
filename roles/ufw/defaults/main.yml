@@ -8,3 +8,7 @@ relay_node_ips:
 # Trusted IP addresses, used for remote access/administration
 trusted_ips:
   - 127.0.0.1/32
+
+# Blocked IP addresses. used to exclude certain peers (I/O)
+blocked_ips:
+  - 127.0.0.1/32
