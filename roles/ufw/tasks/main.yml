@@ -46,6 +46,19 @@
   tags:
     - ufw
 
+- name: Deny connections with certain ips
+  ufw:
+    rule: deny
+    src: '{{ item }}'
+    to: 'any'
+  with_items:
+    - "{{ blocked_ips }}"
+  notify:
+    - restart ufw
+  tags:
+    - ufw
+    - ip-blacklist
+
 - name: Set ufw allow port (restricted) for block-producer
   ufw:
     rule: allow
