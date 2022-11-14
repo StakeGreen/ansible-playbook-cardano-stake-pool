@@ -55,3 +55,7 @@ cardano_community_gliveview_env: "https://raw.githubusercontent.com/cardano-comm
 # Libsecp256k1
 secp256k1_github_url: "https://github.com/bitcoin-core/secp256k1"
 secp256k1_tag: "ac83be33"
+
+# Topology updater
+topology_updater_max_peers: 20
+topology_updater_ip_version: 4
