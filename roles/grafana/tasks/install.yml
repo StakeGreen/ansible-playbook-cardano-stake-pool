@@ -1,11 +1,11 @@
 ---
 - name: add grafana gpg key
-  shell: curl https://packages.grafana.com/gpg.key | sudo apt-key add -
+  shell: curl https://apt.grafana.com/gpg.key | sudo apt-key add -
   tags: monitoring
 
 - name: add grafana repo
   apt_repository:
-    repo: deb https://packages.grafana.com/oss/deb stable main
+    repo: deb https://apt.grafana.com stable main
     state: present
     filename: grafana
   tags: monitoring
