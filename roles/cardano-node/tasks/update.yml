@@ -18,6 +18,7 @@
   ansible.builtin.service:
     name: cardano-node
     state: stopped
+  when: "'block-producer' in inventory_dir or 'relay-node' in inventory_dir"
   tags:
     - update
 
