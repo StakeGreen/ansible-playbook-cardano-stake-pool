@@ -48,3 +48,12 @@
     owner: "{{ server_username }}"
   tags:
       - configure
+
+- name: "Configure producer node | Set cron to check the leaderlog schedule"
+  ansible.builtin.cron:
+    name: "Try to run the leadership schedule every 45 minute(script itself handles the 36 hour limit"
+    minute: "45"
+    job: "{{ cardano_install_dir }}/scripts/leadership_schedule/leadership_schedule_next.sh"
+  tags:
+    - configure
+    - crontab
