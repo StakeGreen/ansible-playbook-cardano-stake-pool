@@ -50,6 +50,8 @@
     - logs
     - scripts
     - scripts/cardano-cli
+    - scripts/leadership_schedule
+    - scripts/leadership_schedule/logs
   tags:
     - configure
 
@@ -67,6 +69,16 @@
   template:
     src: "{{ role_path }}/templates/start-node.sh.j2"
     dest: "{{ cardano_scripts_dir }}/start-node.sh"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0704
+  tags:
+    - configure
+
+- name: "Cardano Node | Leadership schedule"
+  template:
+    src: "{{ role_path }}/templates/leadership_schedule_next.sh.j2"
+    dest: "{{ cardano_scripts_dir }}/leadership_schedule/leadership_schedule_next.sh"
     owner: "{{ server_username }}"
     group: "{{ server_username }}"
     mode: 0704
