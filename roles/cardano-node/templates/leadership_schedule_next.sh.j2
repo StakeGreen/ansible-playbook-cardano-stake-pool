@@ -16,6 +16,7 @@ BYRON_GENESIS_FILE=${CNODE_HOME}/configuration/{{ cardano_node_config }}-byron-g
 SHELLEY_GENESIS_FILE=${CNODE_HOME}/configuration/{{ cardano_node_config }}-shelley-genesis.json
 TESTNET="testnet"
 MAINNET="mainnet"
+SLACK_WEBHOOK_URL={{ slack_leadership_webhook_url }}
 
 # Edit variable with $TESTNET for Testnet and $MAINNET for Mainnet
 network=$MAINNET
@@ -112,8 +113,10 @@ function checkLeadershipSchedule(){
 	next_epoch=$(( $(getCurrentEpoch)+1 ))
 	currentTime=$(getCurrentTime)
 
-        echo "Check is running at: $(timestampToUTC $currentTime) for epoch: $next_epoch"
+    echo "Check is running at: $(timestampToUTC $currentTime) for epoch: $next_epoch"
 	$CCLI query leadership-schedule $network_magic --genesis $SHELLEY_GENESIS_FILE --stake-pool-id $STAKE_POOL_ID --vrf-signing-key-file "$KEYS_DIR/vrf.skey" --next > "$DIRECTORY/logs/leaderSchedule_$next_epoch.txt"
+
+    curl -X POST -H 'Content-type: application/json' --data '{"text": "'"$(cat $DIRECTORY/logs/leaderSchedule_$next_epoch.txt)"'"}' $SLACK_WEBHOOK_URL
 }
 
 if [ isSynced ];then
