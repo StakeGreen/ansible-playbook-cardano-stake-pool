@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/env_vars.sh
+
 # Thanks to tech2help for creating this script! See: https://github.com/Techs2Help/leadership-schedule_check
 
 # cardano node directory
@@ -136,18 +138,13 @@ if [ isSynced ];then
 
 	timeDifference=$(( $timestampCheckLeaders-$currentTime ))
 	if [ -f "$DIRECTORY/logs/leaderSchedule_$(( $(getCurrentEpoch)+1 )).txt" ]; then
-                echo "Check already done, check logs for results"; exit 1
-	elif [[ $timeDifference -gt 129600 ]]; then
-                echo "Too early to run the script, wait for next cron scheduled job"; exit 1
-	elif [[ $timeDifference -gt 0 ]] && [[ $timeDifference -le 129600 ]]; then
-		sleepUntil $timeDifference
-		echo "Check is starting on $(timestampToUTC $(getCurrentTime))"
-	        checkLeadershipSchedule
-		echo "Script ended, schedule logged inside file: leaderSchedule_$(( $(getCurrentEpoch)+1 )).txt"
+        echo "Check already done, check logs for results"; exit 1
+	elif [[ $timeDifference -gt -1 ]]; then
+        echo "Too early to run the script, wait for next cron scheduled job"; exit 1
 	elif [[ $timeDifference -lt 0 ]] && [ ! -f "$DIRECTORY/logs/leaderSchedule_$(( $(getCurrentEpoch)+1 )).txt" ]; then
-                echo "Check is starting on $(timestampToUTC $(getCurrentTime))"
-                checkLeadershipSchedule
-                echo "Script ended, schedule logged inside file: leaderSchedule_$(( $(getCurrentEpoch)+1 )).txt"
+        echo "Check is starting on $(timestampToUTC $(getCurrentTime))"
+        checkLeadershipSchedule
+        echo "Script ended, schedule logged inside file: leaderSchedule_$(( $(getCurrentEpoch)+1 )).txt"
 	else
 		echo "There were problems on running the script, check that everything is working fine"; exit 1
 	fi
