@@ -117,8 +117,11 @@ function checkLeadershipSchedule(){
 
     echo "Check is running at: $(timestampToUTC $currentTime) for epoch: $next_epoch"
 	$CCLI query leadership-schedule $network_magic --genesis $SHELLEY_GENESIS_FILE --stake-pool-id $STAKE_POOL_ID --vrf-signing-key-file "$KEYS_DIR/vrf.skey" --next > "$DIRECTORY/logs/leaderSchedule_$next_epoch.txt"
-
-    curl -X POST -H 'Content-type: application/json' --data '{"text": "'"$(cat $DIRECTORY/logs/leaderSchedule_$next_epoch.txt)"'"}' $SLACK_WEBHOOK_URL
+    if [[ ! -z "$SLACK_WEBHOOK_URL" ]]; then
+        curl -X POST -H 'Content-type: application/json' --data '{"text": "'"$(cat $DIRECTORY/logs/leaderSchedule_$next_epoch.txt)"'"}' $SLACK_WEBHOOK_URL
+    else
+        echo "Slack webhook url not defined, not sharing data."
+    fi
 }
 
 if [ isSynced ];then
