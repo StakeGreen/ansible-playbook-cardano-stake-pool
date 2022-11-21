@@ -81,7 +81,7 @@
     dest: "{{ cardano_scripts_dir }}/leadership_schedule/leadership_schedule_next.sh"
     owner: "{{ server_username }}"
     group: "{{ server_username }}"
-    mode: 0704
+    mode: 0715
   tags:
     - configure
 
