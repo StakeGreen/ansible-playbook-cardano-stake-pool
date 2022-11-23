@@ -1,12 +1,4 @@
 ---
-- name: "Configure Relay | Mitigate DDoS/Syn attack by restricting connections"
-  shell: |
-    iptables -C INPUT -p tcp -m tcp --dport {{ cardano_default_port }} --tcp-flags FIN,SYN,RST,ACK SYN -m connlimit --connlimit-above 5 --connlimit-mask 32 --connlimit-saddr -j REJECT --reject-with tcp-reset ||
-    iptables -I INPUT -p tcp -m tcp --dport {{ cardano_default_port }} --tcp-flags FIN,SYN,RST,ACK SYN -m connlimit --connlimit-above 5 --connlimit-mask 32 --connlimit-saddr -j REJECT --reject-with tcp-reset
-  tags:
-    - configure
-    - iptables
-
 - name: "Configure Relay | Create topology push file"
   template:
     src: "{{ role_path }}/templates/topologyUpdater.sh.j2"
