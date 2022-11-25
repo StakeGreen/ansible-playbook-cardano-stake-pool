@@ -6,9 +6,25 @@
       state: present
   tags: monitoring
 
+- name: "Administer Node | Install prometheus node exporter start script"
+  template: src={{ role_path }}/templates/prometheus-node-exporter.service.j2 dest=/etc/systemd/system/prometheus-node-exporter.service mode=u=rw,g=r,o=r owner=root group=root
+  tags:
+    - monitoring
+  notify:
+    - restart prometheus-node-exporter
+
 - name: "Configure prometheus node exporter | Enable prometheus-node-exporter service"
   systemd: state=started name=prometheus-node-exporter.service daemon_reload=yes
   tags: monitoring
+
+- name: "Configure prometheus node exporter | Create textcollector directory"
+  file:
+    path: "/var/lib/prometheus/node-exporter/custom"
+    state: directory
+    mode: 0755
+    owner: "root"
+  tags:
+      - monitoring
 
 - name: "Configure prometheus node exporter | Ensure prometheus-node-exporter service does start and bootstrap"
   systemd:
@@ -16,5 +32,3 @@
       state: started
       enabled: yes
   tags: monitoring
-
-
