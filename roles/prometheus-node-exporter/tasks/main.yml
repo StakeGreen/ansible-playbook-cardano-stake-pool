@@ -4,3 +4,6 @@
 
 - include: adapools.yml
   when: "'relay-node' in inventory_dir"
+
+- include: custom_stats.yml
+  when: "'block-producer' in inventory_dir or 'relay-node' in inventory_dir"

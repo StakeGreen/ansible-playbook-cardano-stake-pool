@@ -1,16 +1,7 @@
 ---
-- name: "Configure producer node | Create textcollector directory"
-  file:
-    path: "/var/lib/prometheus/node-exporter/adapools"
-    state: directory
-    mode: 0755
-    owner: "root"
-  tags:
-      - monitoring
-
 - name: "Configure prometheus node exporter | set get stats script from adapools"
   template:
-    src: "{{ role_path }}/templates/getstats.sh.j2"
+    src: "{{ role_path }}/templates/adapools_getstats.sh.j2"
     dest: "/home/deploy/adapools-getstats.sh"
     owner: "{{ server_username }}"
     group: "{{ server_username }}"

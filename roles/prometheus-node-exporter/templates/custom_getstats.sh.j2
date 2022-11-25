@@ -1,0 +1,2 @@
+PEER_IN_COUNT=$(ss -4Htnp state established | grep -Po '[0-9\.]+:{{ cardano_default_port }}\s+[0-9\.:]+' | wc -l)
+echo "custom_stats_incoming_peers $PEER_IN_COUNT" > /var/lib/prometheus/node-exporter/custom/connection_stats.prom

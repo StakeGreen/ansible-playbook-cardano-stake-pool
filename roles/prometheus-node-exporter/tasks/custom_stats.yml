@@ -1,0 +1,20 @@
+---
+- name: "Configure prometheus node exporter | set the custom stats script"
+  template:
+    src: "{{ role_path }}/templates/custom_getstats.sh.j2"
+    dest: "/home/deploy/custom-getstats.sh"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0700
+  tags:
+    - monitoring
+
+- name: "Node monitoring | Create custom stats crontab entry"
+  ansible.builtin.cron:
+    name: "Get the custom stats"
+    minute: "*"
+    hour: "*"
+    job: "/home/deploy/custom-getstats.sh"
+  tags:
+    - monitoring
+    - crontab
