@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/usr/bin/cardano-node run +RTS -C0 -N -A16m -qg -qb --disable-delayed-os-memory-return -RTS \
+/usr/bin/cardano-node run +RTS -N -A16m -qg -qb --disable-delayed-os-memory-return -RTS \
   --topology {{ cardano_config_dir }}/{{ cardano_topology_filename }} \
   --config {{ cardano_config_dir }}/{{ cardano_config_filename }} \
   --database-path {{ cardano_install_dir }}/db \
