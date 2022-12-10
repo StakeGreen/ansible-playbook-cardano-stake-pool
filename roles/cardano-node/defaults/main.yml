@@ -38,11 +38,6 @@ cardano_topology_filename: "topology.json"
 cardano_node_type: "block"
 
 # Alonzo Configuration
-cardano_alonzo_genesis: "https://hydra.iohk.io/build/7416228/download/1/{{ cardano_node_config }}-alonzo-genesis.json"
-cardano_shelly_test_config: "https://hydra.iohk.io/build/{{ node_build_num }}/download/1/{{ cardano_node_config }}-config.json"
-cardano_byron_test_genesis: "https://hydra.iohk.io/build/{{ node_build_num }}/download/1/{{ cardano_node_config }}-byron-genesis.json"
-cardano_shelly_test_genesis: "https://hydra.iohk.io/build/{{ node_build_num }}/download/1/{{ cardano_node_config }}-shelley-genesis.json"
-cardano_shelly_test_topology: "https://hydra.iohk.io/build/{{ node_build_num }}/download/1/{{ cardano_node_config }}-topology.json"
 cardano_magic_prefix: "--mainnet"
 
 # Monitoring tools
