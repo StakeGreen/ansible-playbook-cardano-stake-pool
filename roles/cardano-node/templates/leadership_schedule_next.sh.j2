@@ -14,8 +14,8 @@ echo $$ > "$DIRECTORY/logs/leaderScheduleCheck.pid";
 
 # Set your own stake pool ID
 STAKE_POOL_ID=$(cat $KEYS_DIR/stakepoolid.txt)
-BYRON_GENESIS_FILE=${CNODE_HOME}/configuration/{{ cardano_node_config }}-byron-genesis.json
-SHELLEY_GENESIS_FILE=${CNODE_HOME}/configuration/{{ cardano_node_config }}-shelley-genesis.json
+BYRON_GENESIS_FILE=${CNODE_HOME}/configuration/{{ cardano_byron_genesis_filename }}
+SHELLEY_GENESIS_FILE=${CNODE_HOME}/configuration/{{ cardano_shelley_genesis_filename }}
 TESTNET="testnet"
 MAINNET="mainnet"
 SLACK_WEBHOOK_URL={{ slack_leadership_webhook_url }}
