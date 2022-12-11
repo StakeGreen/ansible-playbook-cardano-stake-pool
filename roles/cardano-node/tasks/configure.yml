@@ -95,7 +95,7 @@
 
 - name: "Configure Node | Download configurations (iohk)"
   get_url:
-    url: "{{ cardano_config_download}}{{ cardano_node_config }}/{{ item}}.json"
+    url: "{{ cardano_config_download}}{{ cardano_node_config }}/{{ item }}.json"
     dest: "{{ cardano_config_dir }}/"
   become_user: "{{ server_username }}"
   timeout: 25

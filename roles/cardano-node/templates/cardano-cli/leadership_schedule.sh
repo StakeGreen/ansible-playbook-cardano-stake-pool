@@ -15,7 +15,7 @@ outputFile=${CNODE_HOME}/scripts/leadership-schedule-${argument}."\$(date +%F-%H
 
 cardano-cli query leadership-schedule \
 --mainnet \
---genesis ${CNODE_HOME}/configuration/${NODE_CONFIG}-shelley-genesis.json \
+--genesis ${SHELLEY_GENESIS_JSON} \
 --stake-pool-id $(cat ${KEYS_DIR}/stakepoolid.txt) \
 --vrf-signing-key-file ${KEYS_DIR}/vrf.skey \
 --${argument} > ${WORKING_DIR}/leadership-schedule-${argument}.log

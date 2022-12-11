@@ -1,4 +1,4 @@
 #!/bin/bash
 BLOCKPRODUCING_IP={{ block_producer_ip }}
 BLOCKPRODUCING_PORT={{ cardano_default_port }}
-curl -{{ topology_updater_ip_version }} -o /opt/cardano/cnode/configuration/{{ cardano_node_config }}-topology.json "https://api.clio.one/htopology/v1/fetch/?max={{ topology_updater_max_peers }}&magic=${NWMAGIC}&customPeers=${BLOCKPRODUCING_IP}:${BLOCKPRODUCING_PORT}&ipv={{ topology_updater_ip_version }}"
+curl -{{ topology_updater_ip_version }} -o /opt/cardano/cnode/configuration/topology.json "https://api.clio.one/htopology/v1/fetch/?max={{ topology_updater_max_peers }}&magic=${NWMAGIC}&customPeers=${BLOCKPRODUCING_IP}:${BLOCKPRODUCING_PORT}&ipv={{ topology_updater_ip_version }}"

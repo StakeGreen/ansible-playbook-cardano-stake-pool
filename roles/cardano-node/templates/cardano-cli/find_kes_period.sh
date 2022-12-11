@@ -1,7 +1,7 @@
 #!/bin/bash
 source ~/.bashrc
 pushd +1
-slotsPerKESPeriod=$(cat ${CNODE_HOME}/configuration/${NODE_CONFIG}-shelley-genesis.json | jq -r '.slotsPerKESPeriod')
+slotsPerKESPeriod=$(cat ${SHELLEY_GENESIS_JSON} | jq -r '.slotsPerKESPeriod')
 echo slotsPerKESPeriod: ${slotsPerKESPeriod}
 slotNo=$(cardano-cli query tip --mainnet | jq -r '.slot')
 echo slotNo: ${slotNo}
