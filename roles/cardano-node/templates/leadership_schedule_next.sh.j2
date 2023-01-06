@@ -97,6 +97,8 @@ function getLeaderslotCheckTime(){
 	# epoch completion percent to check for --next epoch leaderslots
 	percentage=70
 	checkTimestamp=$(( $epochStartTime+($percentage*($epochEndTime-$epochStartTime)/100) ))
+	# Add 10 minutes to delay the calculations a little a bit and give the network some space
+	checkTimestamp=$(( $checkTimestamp + 600 ))
 
 	echo $checkTimestamp
 }
@@ -118,7 +120,7 @@ function checkLeadershipSchedule(){
     echo "Check is running at: $(timestampToUTC $currentTime) for epoch: $next_epoch"
 	$CCLI query leadership-schedule $network_magic --genesis $SHELLEY_GENESIS_FILE --stake-pool-id $STAKE_POOL_ID --vrf-signing-key-file "$KEYS_DIR/vrf.skey" --next > "$DIRECTORY/logs/leaderSchedule_$next_epoch.txt"
     if [[ ! -z "$SLACK_WEBHOOK_URL" ]]; then
-        curl -X POST -H 'Content-type: application/json' --data '{"text": "'"$(cat $DIRECTORY/logs/leaderSchedule_$next_epoch.txt)"'"}' $SLACK_WEBHOOK_URL
+        curl -X POST -H 'Content-type: application/json' --data '{"text": "'"Leadership schedule for epoch $next_epoch:\n $(cat $DIRECTORY/logs/leaderSchedule_$next_epoch.txt)"'"}' $SLACK_WEBHOOK_URL
     else
         echo "Slack webhook url not defined, not sharing data."
     fi
@@ -137,7 +139,7 @@ if [ isSynced ];then
 	echo "Current cron execution time: $(timestampToUTC $currentTime)"
 
 	timestampCheckLeaders=$(getLeaderslotCheckTime)
-	echo "Next check time: $(timestampToUTC $timestampCheckLeaders)"
+	echo "Next leadership check time: $(timestampToUTC $timestampCheckLeaders)"
 
 	timeDifference=$(( $timestampCheckLeaders-$currentTime ))
 	if [ -f "$DIRECTORY/logs/leaderSchedule_$(( $(getCurrentEpoch)+1 )).txt" ]; then
