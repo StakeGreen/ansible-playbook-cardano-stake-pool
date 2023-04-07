@@ -100,6 +100,20 @@
   tags:
     - install
 
+- name: "Node Install | Configure, build GHC {{ ghc_install_version }}"
+  shell: |
+    cd /home/{{ server_username }}/ghc-{{ ghc_install_version }}
+    ./configure
+    sudo make install
+  tags:
+    - install
+
+- name: "Node Install | Remove ghc build directory {{ ghc_install_version }}"
+  shell: rm -rf /home/{{ server_username }}/ghc-{{ ghc_install_version }}
+  tags:
+    - install
+    - cleanup
+
 - name: "Node Install | Release version {{ cardano_version_tag }}"
   debug:
     var: cardano_version_tag
@@ -107,7 +121,7 @@
     - install
     - node
 
-- name: "Node Install | Delete cardano-node build directory"
+- name: "Node Install | Delete cardano-node build directory before build"
   file:
     state: absent
     path: /home/{{ server_username }}/cardano-node
@@ -198,6 +212,12 @@
     - install
     - node
 
+- name: "Node Install | Remove cabal build directory"
+  shell: rm -rf /home/{{ server_username }}/.cabal
+  tags:
+    - install
+    - cleanup
+
 - name: "Node Install | Stop cardano-node service"
   systemd:
     name: cardano-node.service
@@ -225,6 +245,15 @@
     - binaries
     - install
     - node
+
+- name: "Node Install | Delete cardano-node build directory after build"
+  file:
+    state: absent
+    path: /home/{{ server_username }}/cardano-node
+  tags:
+    - install
+    - node
+    - cleanup
 
 - name: "Administer Node | Install gLiveView monitoring tool"
   get_url:
