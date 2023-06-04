@@ -21,7 +21,7 @@
 
 - name: "Configure Relay | Set topology push update cron"
   ansible.builtin.cron:
-    name: "send previous and current epochs slots to pooltool"
+    name: "Call topology updater"
     minute: "33"
     job: "{{ cardano_install_dir }}/scripts/topologyUpdater.sh"
   tags:
