@@ -1,1 +1,1 @@
-curl https://js.cexplorer.io/api-static/pool/{{ cardano_pool_id_bech32 }}.json | jq '.data | del(.handles, .stats, .url, .img, .updated, .name, .pool_id, .pool_id_hash)' | tr -d \"{},: | awk NF | sed -e 's/^[ \t]*/adapools_/' > /var/lib/prometheus/node-exporter/adapools/adapools.prom
+curl https://js.cexplorer.io/api-static/pool/{{ cardano_pool_id_bech32 }}.json | jq '.data | del(.handles, .stats, .url, .img, .updated, .name, .pool_id, .pool_id_hash)' | tr -d \"{},: | awk NF | sed -e 's/^[ \t]*/adapools_/' > /var/lib/prometheus/node-exporter/custom/adapools.prom
