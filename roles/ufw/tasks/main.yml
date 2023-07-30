@@ -32,7 +32,7 @@
   tags:
     - ufw
 
-- name: Set ufw allow ports for monitor
+- name: Set ufw allow port for grafana dashboard
   ufw:
     rule: allow
     port: "{{ grafana_port }}"
