@@ -237,26 +237,26 @@
     - install
 
 - name: "Node Install | Copy blst bindings"
-    copy:
-      src: "/home/{{ server_username }}/src/bstl/bindings/{{ item.src }}"
-      dest: /usr/local/include/
-      owner: "{{ server_username }}"
-      group: "{{ server_username }}"
-      mode: 0644
-    loop:
-      - blst_aux.h
-      - blst.h
-      - blst.hpp
+  copy:
+    src: "/home/{{ server_username }}/src/bstl/bindings/{{ item.src }}"
+    dest: /usr/local/include/
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0644
+  loop:
+    - blst_aux.h
+    - blst.h
+    - blst.hpp
   tags:
     - install
 
 - name: "Node Install | Copy blst lib"
-    copy:
-      src: "/home/{{ server_username }}/src/bstl/libblst.a"
-      dest: /usr/local/lib/
-      owner: "{{ server_username }}"
-      group: "{{ server_username }}"
-      mode: 0644
+  copy:
+    src: "/home/{{ server_username }}/src/bstl/libblst.a"
+    dest: /usr/local/lib/
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0644
   tags:
     - install
 
