@@ -210,7 +210,7 @@
   git:
     repo: "{{ blst_github_url }}"
     dest: /home/{{ server_username }}/src/bstl
-    version: "{{ secp256k1_tag }}"
+    version: "{{ blst_tag }}"
     clone: yes
     accept_hostkey: yes
   register: repo_download
