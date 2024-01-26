@@ -1,8 +1,14 @@
 ---
+- name: Reset UFW
+  ufw:
+    state: reset
+  tags:
+    - ufw
+
 - name: Configure ufw defaults
   ufw: direction={{ item.direction }} policy={{ item.policy }}
   with_items:
-    - { direction: 'incoming', policy: 'deny' }
+    - { direction: 'incoming', policy: 'deny', insert_relative_to: last-ipv4, insert: 0 }
     - { direction: 'outgoing', policy: 'allow' }
   notify:
     - restart ufw
@@ -12,9 +18,9 @@
 - name: Set ufw allow port for relay-node
   ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }} src={{ item.src }}
   with_items:
-    - { rule: 'allow', port: '{{ cardano_default_port }}', proto: 'tcp', src: 'any'}
-    - { rule: 'allow', port: '{{ prometheus_node_exporter_port }}', proto: 'tcp', src: '{{ monitor_ip }}' }
-    - { rule: 'allow', port: '{{ cardana_prometheus_port }}', proto: 'tcp', src: '{{ monitor_ip }}' }
+    - { rule: 'allow', port: '{{ cardano_default_port }}', proto: 'tcp', src: 'any', insert_relative_to: first-ipv4, insert: 0}
+    - { rule: 'allow', port: '{{ prometheus_node_exporter_port }}', proto: 'tcp', src: '{{ monitor_ip }}', insert_relative_to: first-ipv4, insert: 0 }
+    - { rule: 'allow', port: '{{ cardana_prometheus_port }}', proto: 'tcp', src: '{{ monitor_ip }}', insert_relative_to: first-ipv4, insert: 0 }
   when: "'relay-node' in inventory_dir"
   notify:
     - restart ufw
@@ -24,8 +30,8 @@
 - name: Set ufw allow ports for block-producer
   ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }} src={{ item.src }}
   with_items:
-    - { rule: 'allow', port: '{{ prometheus_node_exporter_port }}', proto: 'tcp', src: '{{ monitor_ip }}' }
-    - { rule: 'allow', port: '{{ cardana_prometheus_port }}', proto: 'tcp', src: '{{ monitor_ip }}' }
+    - { rule: 'allow', port: '{{ prometheus_node_exporter_port }}', proto: 'tcp', src: '{{ monitor_ip }}', insert_relative_to: first-ipv4, insert: 0 }
+    - { rule: 'allow', port: '{{ cardana_prometheus_port }}', proto: 'tcp', src: '{{ monitor_ip }}', insert_relative_to: first-ipv4, insert: 0 }
   when: "'block-producer' in inventory_dir"
   notify:
     - restart ufw
@@ -38,6 +44,8 @@
     port: "{{ grafana_port }}"
     proto: tcp
     src: '{{ item }}'
+    insert_relative_to: first-ipv4
+    insert: 0
   with_items:
     - "{{ trusted_ips }}"
   when: "'monitor' in inventory_dir"
@@ -45,12 +53,15 @@
     - restart ufw
   tags:
     - ufw
+    - ip-whitelist
 
 - name: Deny connections with certain ips
   ufw:
     rule: deny
     src: '{{ item }}'
     to: 'any'
+    insert_relative_to: last-ipv4
+    insert: 0
   with_items:
     - "{{ blocked_ips }}"
   notify:
@@ -65,6 +76,7 @@
     port: "{{ cardano_default_port }}"
     proto: tcp
     src: '{{ item }}'
+    insert: 1
   with_items:
     - "{{ relay_node_ips }}"
   when: "'block-producer' in inventory_dir"
@@ -72,6 +84,7 @@
     - restart ufw
   tags:
     - ufw
+    - ip-whitelist
 
 - name: Restrict ssh to trusted IPs
   ufw:
@@ -79,12 +92,14 @@
     port: "22"
     proto: tcp
     src: '{{ item }}'
+    insert: 1
   with_items:
     - "{{ trusted_ips }}"
   notify:
     - restart ufw
   tags:
     - ufw
+    - ip-whitelist
 
 - name: Enable ufw logging
   ufw: logging=on
