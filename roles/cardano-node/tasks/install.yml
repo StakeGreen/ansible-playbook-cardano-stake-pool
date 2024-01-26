@@ -206,6 +206,66 @@
     - install
     - node
 
+- name: "Node Install | Clone bstl repo"
+  git:
+    repo: "{{ blst_github_url }}"
+    dest: /home/{{ server_username }}/src/bstl
+    version: "{{ secp256k1_tag }}"
+    clone: yes
+    accept_hostkey: yes
+  register: repo_download
+  tags:
+    - install
+    - node
+    - git
+
+- name: "Node Install | Build bstl "
+  shell: |
+    cd /home/{{ server_username }}/src/bstl
+    ./build.sh
+  tags:
+    - install
+
+- name: "Node Install | Install blst config"
+  template:
+    src: "{{ role_path }}/templates/libblst.pc.jw"
+    dest: "/usr/local/lib/pkgconfig/libblst.pc"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0644
+  tags:
+    - install
+
+- name: "Node Install | Copy blst bindings"
+    copy:
+      src: "/home/{{ server_username }}/src/bstl/bindings/{{ item.src }}"
+      dest: /usr/local/include/
+      owner: "{{ server_username }}"
+      group: "{{ server_username }}"
+      mode: 0644
+    loop:
+      - blst_aux.h
+      - blst.h
+      - blst.hpp
+  tags:
+    - install
+
+- name: "Node Install | Copy blst lib"
+    copy:
+      src: "/home/{{ server_username }}/src/bstl/libblst.a"
+      dest: /usr/local/lib/
+      owner: "{{ server_username }}"
+      group: "{{ server_username }}"
+      mode: 0644
+  tags:
+    - install
+
+- name: "Node Install | Remove blst build directory"
+  shell: rm -rf /home/{{ server_username }}/src/bstl
+  tags:
+    - install
+    - cleanup
+
 - name: "Node Install | Building Cardano node"
   shell: cd /home/{{ server_username }}/cardano-node && cabal build cardano-node cardano-cli
   tags:

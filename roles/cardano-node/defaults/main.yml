@@ -13,8 +13,8 @@ ghc_install_version: 8.10.7
 ghc_install_url: "https://downloads.haskell.org/~ghc/{{ ghc_install_version }}/ghc-{{ ghc_install_version }}-x86_64-deb9-linux.tar.xz"
 
 # Libsodium
-libsodium_github_url: "https://github.com/input-output-hk/libsodium"
-libsodium_version_tag:  "66f017f1"
+libsodium_github_url: "https://github.com/intersectmbo/libsodium"
+libsodium_version_tag:  "dbb48cc"
 
 # Cluster configuration
 cardano_node_config: "mainnet"
@@ -24,7 +24,7 @@ cardano_node_build_number: "7416228"
 cardano_github_repo: "https://github.com/input-output-hk/cardano-node.git"
 cardano_github_release_url: "https://api.github.com/repos/input-output-hk/cardano-node/releases/latest"
 cardano_config_download: "https://book.world.dev.cardano.org/environments/"
-cardano_version_tag: "8.1.2"
+cardano_version_tag: "8.7.2"
 cardano_install_dir: "/opt/cardano/cnode"
 cardamo_cli_path: "cardano-cli"
 cardano_config_dir: "{{ cardano_install_dir }}/configuration"
@@ -50,6 +50,10 @@ cardano_community_gliveview_env: "https://raw.githubusercontent.com/cardano-comm
 # Libsecp256k1
 secp256k1_github_url: "https://github.com/bitcoin-core/secp256k1"
 secp256k1_tag: "ac83be33"
+
+blst_github_url: "https://github.com/supranational/blst"
+blst_tag: "v0.3.10"
+
 
 # Topology updater
 topology_updater_max_peers: 20
