@@ -228,7 +228,7 @@
 
 - name: "Node Install | Install blst config"
   template:
-    src: "{{ role_path }}/templates/libblst.pc.jw"
+    src: "{{ role_path }}/templates/libblst.pc.j2"
     dest: "/usr/local/lib/pkgconfig/libblst.pc"
     owner: "{{ server_username }}"
     group: "{{ server_username }}"
