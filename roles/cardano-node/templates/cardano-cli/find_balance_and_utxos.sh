@@ -14,8 +14,9 @@ while read -r utxo; do
     in_addr=$(awk '{ print $1 }' <<< "${utxo}")
     idx=$(awk '{ print $2 }' <<< "${utxo}")
     utxo_balance=$(awk '{ print $3 }' <<< "${utxo}")
-    token_flag=$(awk '{ print $4 }' <<< "${utxo}") # When the token flag is true, it means its a token and we don't need to contain it in our tx out
-    if [[ $token_flag = 1 ]]; then
+    token_flag=$(awk '{ print $6 }' <<< "${utxo}") # When the token flag is true, it means its a token(nft) and we don't need to contain it in our tx in and tx out
+    if [[ $token_flag != 'TxOutDatumNone' ]]; then
+      echo 'nft token in wallet, skipping in transaction' + $token_flag
       continue
     fi;
     total_balance=$((${total_balance}+${utxo_balance}))
