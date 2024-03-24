@@ -129,6 +129,12 @@
     - configure
     - configure-config
 
+- name: "Configure Node | Update P2P to false"
+  replace:
+    path: "{{ cardano_config_dir }}/{{ cardano_config_filename }}"
+    regexp: '(^\s{2,}"EnableP2P":\s)true,'
+    replace: '\1false,'
+
 - name: "Configure Node | Install cardano-node service file"
   template: src={{ role_path }}/templates/cardano-node.service.j2 dest=/etc/systemd/system/cardano-node.service mode=u=rw,g=r,o= owner=root group=root
   tags:

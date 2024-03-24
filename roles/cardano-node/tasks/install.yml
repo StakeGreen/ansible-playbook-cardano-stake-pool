@@ -238,11 +238,12 @@
 
 - name: "Node Install | Copy blst bindings"
   copy:
-    src: "/home/{{ server_username }}/src/bstl/bindings/{{ item.src }}"
+    src: "/home/{{ server_username }}/src/bstl/bindings/{{ item }}"
     dest: /usr/local/include/
     owner: "{{ server_username }}"
     group: "{{ server_username }}"
     mode: 0644
+    remote_src: yes
   loop:
     - blst_aux.h
     - blst.h
@@ -257,6 +258,7 @@
     owner: "{{ server_username }}"
     group: "{{ server_username }}"
     mode: 0644
+    remote_src: yes
   tags:
     - install
 
