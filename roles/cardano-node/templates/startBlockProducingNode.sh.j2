@@ -1,7 +1,7 @@
 #!/bin/bash
 # Environment variables are populated at runtime in env_vars.sh
 
-/usr/bin/cardano-node run +RTS -C0 -N -A16m -qg -qb --disable-delayed-os-memory-return -RTS \
+/usr/bin/cardano-node run +RTS -N -xn -RTS \
   --topology {{ cardano_config_dir }}/{{ cardano_topology_filename }} \
   --database-path {{ cardano_install_dir }}/db \
   --socket-path {{ cardano_install_dir }}/db/node.socket \
