@@ -2,7 +2,7 @@
 # for Block producing nodes ONLY
 - name: "Administer Node | Install cncli latest release"
   ansible.builtin.unarchive:
-    src: "{{ cardano_community_cncli_uri }}/{{ cardano_community_cncli_tag}}/cncli-{{ cardano_community_cncli_version}}-x86_64-unknown-linux-musl.tar.gz"
+    src: "{{ cardano_community_cncli_uri }}/{{ cardano_community_cncli_tag}}/cncli-{{ cardano_community_cncli_version}}-ubuntu22-x86_64-unknown-linux-musl.tar.gz"
     dest: /usr/local/bin/
     remote_src: yes
   tags:

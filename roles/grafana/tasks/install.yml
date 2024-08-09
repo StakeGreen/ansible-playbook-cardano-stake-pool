@@ -33,7 +33,7 @@
     - renew-certificate
 
 - name: Set ufw allow ports 80 and 443 for generating certificate
-  ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }}
+  ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }} insert_relative_to=first-ipv4 insert=0
   with_items:
     - { rule: 'allow', port: '80', proto: 'tcp' }
     - { rule: 'allow', port: '443', proto: 'tcp' }
@@ -71,7 +71,7 @@
     - renew-certificate
 
 - name: Set ufw deny ports 80 and 443 for generating certificate
-  ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }}
+  ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }} insert_relative_to=first-ipv4 insert=0
   with_items:
     - { rule: 'deny', port: '80', proto: 'tcp' }
     - { rule: 'deny', port: '443', proto: 'tcp' }

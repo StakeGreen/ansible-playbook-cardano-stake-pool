@@ -106,7 +106,6 @@
     - "alonzo-genesis"
     - "config"
     - "topology"
-    - "conway-genesis"
   tags:
     - configure
     - download
