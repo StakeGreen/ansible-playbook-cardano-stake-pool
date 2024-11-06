@@ -104,6 +104,7 @@
     - "byron-genesis"
     - "shelley-genesis"
     - "alonzo-genesis"
+    - "conway-genesis"
     - "config"
     - "topology"
   tags:
@@ -132,6 +133,16 @@
   replace:
     path: "{{ cardano_config_dir }}/{{ cardano_config_filename }}"
     regexp: '(^\s{2,}"EnableP2P":\s)true,'
+    replace: '\1false,'
+  when: p2p != "true"
+  tags:
+    - configure
+    - configure-config
+
+- name: "Configure Node | Peersharing to false"
+  replace:
+    path: "{{ cardano_config_dir }}/{{ cardano_config_filename }}"
+    regexp: '(^\s{2,}"PeerSharing":\s)true,'
     replace: '\1false,'
   tags:
     - configure
