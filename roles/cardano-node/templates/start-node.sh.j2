@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/usr/bin/cardano-node run +RTS -N -xn -RTS \
+/usr/bin/cardano-node run +RTS -N -RTS \
   --topology {{ cardano_config_dir }}/{{ cardano_topology_filename }} \
   --config {{ cardano_config_dir }}/{{ cardano_config_filename }} \
   --database-path {{ cardano_install_dir }}/db \
