@@ -33,7 +33,7 @@
     - renew-certificate
 
 - name: Set ufw allow ports 80 and 443 for generating certificate
-  ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }} insert_relative_to=first-ipv4 insert=0
+  ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }} insert_relative_to=last-ipv4 insert=0
   with_items:
     - { rule: 'allow', port: '80', proto: 'tcp' }
     - { rule: 'allow', port: '443', proto: 'tcp' }
@@ -102,7 +102,7 @@
 - name: Set https for grafana
   lineinfile:
     dest: /etc/grafana/grafana.ini
-    regexp: "^#?;protocol = http"
+    regexp: "^;protocol = http"
     line: "protocol = https"
     state: present
   tags:
@@ -111,7 +111,7 @@
 - name: Set cert file for grafana
   lineinfile:
     dest: /etc/grafana/grafana.ini
-    regexp: "^#?;cert_file ="
+    regexp: "^;cert_file ="
     line: "cert_file = /etc/grafana/fullchain.pem"
     state: present
   tags:
@@ -120,7 +120,7 @@
 - name: Set cert key for grafana
   lineinfile:
     dest: /etc/grafana/grafana.ini
-    regexp: "^#?;cert_key ="
+    regexp: "^;cert_key ="
     line: "cert_key = /etc/grafana/privkey.pem"
     state: present
   tags:
