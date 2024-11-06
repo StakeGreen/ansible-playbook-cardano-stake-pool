@@ -25,6 +25,10 @@ scrape_configs:
             labels:
                 alias: 'relay2'
                 type:  'cardano-node'
+          - targets: ['{{ relay3_ip }}:{{ cardana_prometheus_port }}']
+            labels:
+                alias: 'relay3'
+                type:  'cardano-node'
 
     -   job_name: 'node'
 
@@ -40,4 +44,8 @@ scrape_configs:
             -   targets: [ '{{ relay2_ip }}:{{ prometheus_node_exporter_port }}' ]
                 labels:
                     alias: 'relay2'
+                    type: 'host-system'
+            -   targets: [ '{{ relay3_ip }}:{{ prometheus_node_exporter_port }}' ]
+                labels:
+                    alias: 'relay3'
                     type: 'host-system'

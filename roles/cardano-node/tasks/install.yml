@@ -269,7 +269,7 @@
     - cleanup
 
 - name: "Node Install | Building Cardano node"
-  shell: cd /home/{{ server_username }}/cardano-node && cabal build cardano-node cardano-cli
+  shell: cd /home/{{ server_username }}/cardano-node && cabal build all && cabal build cardano-cli
   tags:
     - install
     - node
@@ -291,8 +291,9 @@
 
 - name: "Node Install | Copy binaries to /usr/bin for systemd control"
   shell: |
-    cp $(find /home/{{ server_username }}/cardano-node/dist-newstyle/build -type f -name "cardano-cli") /usr/bin/cardano-cli
-    cp $(find /home/{{ server_username }}/cardano-node/dist-newstyle/build -type f -name "cardano-node") /usr/bin/cardano-node
+    cd /home/{{ server_username }}/cardano-node/
+    cp -p "$(./scripts/bin-path.sh cardano-cli)" /usr/bin/cardano-cli
+    cp -p "$(./scripts/bin-path.sh cardano-node)" /usr/bin/cardano-node
   tags:
     - binaries
     - install

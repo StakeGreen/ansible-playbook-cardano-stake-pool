@@ -10,7 +10,7 @@
 - name: "Upgrade: pull topology file"
   shell: |
     {{ cardano_scripts_dir }}/relay_topology_pull.sh
-  when: "'relay-node' in inventory_dir"
+  when: "'relay-node' in inventory_dir and p2p == true"
   tags:
     - update
 
