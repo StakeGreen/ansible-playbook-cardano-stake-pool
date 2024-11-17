@@ -40,7 +40,7 @@
     name: cncli-sync.service
     state: started
     enabled: yes
-    when: cncli == "true"
+  when: cncli == "true"
   tags:
     - administer
     - service
