@@ -5,6 +5,7 @@
     src: "{{ cardano_community_cncli_uri }}/{{ cardano_community_cncli_tag}}/cncli-{{ cardano_community_cncli_version}}-ubuntu22-x86_64-unknown-linux-musl.tar.gz"
     dest: /usr/local/bin/
     remote_src: yes
+  when: cncli == "true"
   tags:
     - administer
 
@@ -29,6 +30,7 @@
 
 - name: "Administer Node | Install cncli-sendtip.service"
   template: src={{ role_path }}/templates/cncli-sendtip.service.j2 dest=/etc/systemd/system/cncli-sendtip.service mode=u=rw,g=r,o= owner=root group=root
+  when: cncli == "true"
   tags:
     - administer
     - service
@@ -38,6 +40,7 @@
     name: cncli-sync.service
     state: started
     enabled: yes
+    when: cncli == "true"
   tags:
     - administer
     - service
@@ -47,6 +50,7 @@
     name: cncli-sendtip.service
     state: started
     enabled: yes
+  when: cncli == "true"
   tags:
     - administer
     - service
