@@ -6,7 +6,7 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Upgrade existing packages 
+- name: Upgrade existing packages
   apt:
     update_cache: yes
     upgrade: safe
@@ -53,7 +53,7 @@
   set_fact:
     swap_file: "{{swap_file_path}}"
   tags:
-      - swap
+    - swap
 
 - name: Check if swap file exists
   stat:
@@ -64,7 +64,7 @@
 
 - name: Create swap file
   command: fallocate -l {{swap_file_size}} {{swap_file}}
-  when: not swap_file_check.stat.exists
+  when: not swap_file_check.stat.exists and swap == "true"
   tags:
     - swap
 
@@ -73,13 +73,14 @@
     owner=root
     group=root
     mode=0600
+  when: swap == "true"
   tags:
     - swap
 
 - name: Format swap file
   become: yes
   command: "mkswap {{swap_file}}"
-  when: not swap_file_check.stat.exists
+  when: not swap_file_check.stat.exists and swap == "true"
   tags:
     - swap
 
@@ -91,13 +92,14 @@
     passno=0
     dump=0
     state=present
+  when: swap == "true"
   tags:
     - swap
 
 - name: Turn on swap
   become: yes
   command: swapon -a
-  when: not swap_file_check.stat.exists
+  when: not swap_file_check.stat.exists and swap == "true"
   tags:
     - swap
 
@@ -106,6 +108,7 @@
   sysctl:
     name: vm.swappiness
     value: "{{swappiness}}"
+  when: swap == "true"
   tags:
     - swap
 
